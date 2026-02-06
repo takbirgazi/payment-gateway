@@ -10,8 +10,10 @@ export const signFields = (
         .map(name => `${name}=${fields[name]}`)
         .join(",");
 
+    // Cybersource secret key is used as a plain UTF-8 string,
+    // not base64-decoded.
     return crypto
-        .createHmac("sha256", Buffer.from(secretKey, "base64"))
+        .createHmac("sha256", secretKey)
         .update(dataToSign)
         .digest("base64");
 };
