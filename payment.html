@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cybersource Test Payment</title>
+  </head>
+  <body>
+    <h1>Start Test Payment</h1>
+    <button id="payBtn">Pay 540 BDT</button>
+
+    <script>
+      async function startPayment() {
+        try {
+          const res = await fetch("http://localhost:5000/api/v1/brac/create", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              amount: 540,
+              currency: "BDT",
+            }),
+          });
+
+          if (!res.ok) {
+            const text = await res.text();
+            alert("Error from backend: " + text);
+            return;
+          }
+
+          const data = await res.json();
+          const { payUrl, fields } = data;
+
+          const form = document.createElement("form");
+          form.method = "POST";
+          form.action = payUrl;
+
+          Object.keys(fields).forEach((name) => {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = name;
+            input.value = fields[name];
+            form.appendChild(input);
+          });
+
+          document.body.appendChild(form);
+          form.submit();
+        } catch (err) {
+          console.error(err);
+          alert("Unexpected error: " + err);
+        }
+      }
+
+      document
+        .getElementById("payBtn")
+        .addEventListener("click", startPayment);
+    </script>
+  </body>
+</html>
+
