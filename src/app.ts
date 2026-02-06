@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import path from "path";
 import { router } from "./app/routes";
 import { envVars } from "./app/config/env";
 import cors from "cors";
@@ -28,6 +29,11 @@ app.get("/", (req: Request, res: Response) => {
     res.status(200).json({
         "message": "Welcome to No Cash!"
     })
+});
+
+// Serve payment demo page (PHP-style form: /api/v1/brac/form)
+app.get("/payment.html", (_req: Request, res: Response) => {
+    res.sendFile(path.join(process.cwd(), "payment.html"));
 });
 
 // Global Error Handle 

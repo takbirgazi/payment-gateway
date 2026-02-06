@@ -5,13 +5,15 @@
     <title>Cybersource Test Payment</title>
   </head>
   <body>
-    <h1>Start Test Payment</h1>
-    <button id="payBtn">Pay 540 BDT</button>
+    <h1>Cybersource Payment</h1>
+    <p><a href="/api/v1/brac/form">PHP-style flow: Form → Confirm → Cybersource → Receipt</a></p>
+    <p>Or use API + auto-submit:</p>
+    <button id="payBtn">Pay 540 BDT (API)</button>
 
     <script>
       async function startPayment() {
         try {
-          const res = await fetch("http://localhost:5000/api/v1/brac/create", {
+          const res = await fetch("/api/v1/brac/create", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
